@@ -3,7 +3,7 @@
 Starts the API and return the status of your API
 Registers the blueprint and runs the Flask server
 """
-from flask import flask
+from flask import Flask, jsonify
 from api.v1.views import app_views
 from models import FileStorage
 
