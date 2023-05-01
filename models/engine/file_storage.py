@@ -80,3 +80,23 @@ class FileStorage:
         """Deserialize the JSON file to objects
         """
         self.reload()
+    
+    def get(self, cls, id):
+        """Retrieve an object from storage."""
+
+        if cls and id:
+            key = "{}.{}".format(cls.__name__, id)
+            return self.__session.query(cls).get(id)
+    
+    def count(self, cls=None):
+        """Count the number of objects in storage."""
+
+        count = 0
+
+        if cls:
+            count = self.__session.query(cls).count()
+        else:
+            for entity in all_classes:
+                count += self.__session.query(eval(entity)).count()
+
+        return (count)

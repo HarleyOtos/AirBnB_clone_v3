@@ -95,6 +95,23 @@ class TestDBStorage(unittest.TestCase):
             for line in r:
                 self.assertEqual(line, "{}")
         self.assertIs(self.storage.reload(), None)
+    
+    def test_db_storage_get(self):
+        """Test the get() method of DBStorage."""
+        storage = DBStorage()
+
+        # Create a State object and add it to the session
+        state = State(name="State")
+        storage.new(state)
+        storage.save()
+        
+        # Test retrieving the State object by ID
+        result = storage.get(State, state.id)
+        self.assertEqual(result, state)
+        
+        # Test retrieving a non-existent object
+        result = storage.get(State, "invalid_id")
+        self.assertIsNone(result)
 
 
 if __name__ == "__main__":
