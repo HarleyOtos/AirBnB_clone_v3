@@ -3,7 +3,7 @@
 Starts the API and return the status of your API
 Registers the blueprint and runs the Flask server
 """
-from flask import flask
+from flask import Flask, jsonify
 from api.v1.views import app_views
 from models import FileStorage
 
@@ -14,6 +14,11 @@ app.register_blueprint(app_views)
 def teardown_storage(exception):
     """Calls storage.close()"""
     storage.close()
+
+@app.errorhandler(404)
+def not_found(error):
+    """Handles all 404 errors"""
+    return (jsonify({"error": "Not found"}), 404)
 
 if __name__ = __main__:
     import os
