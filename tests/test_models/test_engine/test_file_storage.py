@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """test for file storage"""
 import unittest
+from unittest.mock import patch
 import pep8
 import json
 import os
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -118,6 +120,19 @@ class TestFileStorage(unittest.TestCase):
         # Test retrieving a non-existent object
         result = storage.get(State, "invalid_id")
         self.assertIsNone(result)
+
+    class TestFileStorage(unittest.TestCase):
+        def test_count_all_objects(self):
+            count = storage.count()
+            self.assertEqual(count, 7)
+            
+        def test_count_objects_of_a_class(self):
+            count = storage.count(User)
+            self.assertEqual(count, 3)
+                
+        def test_count_objects_of_invalid_class(self):
+            count = storage.count(InvalidClass)
+            self.assertEqual(count, 0)
 
 
 if __name__ == "__main__":

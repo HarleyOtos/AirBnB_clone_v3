@@ -113,6 +113,44 @@ class TestDBStorage(unittest.TestCase):
         result = storage.get(State, "invalid_id")
         self.assertIsNone(result)
 
+    def test_db_storage_count(self):
+        """Test the count() method of DBStorage."""
+        storage = DBStorage()
+        
+        # Ensure count returns 0 initially
+        self.assertEqual(storage.count(), 0)
+        
+        # Create some objects and save them to the database
+        state1 = State(name="California")
+        state2 = State(name="New York")
+        city1 = City(name="San Francisco", state_id=state1.id)
+        city2 = City(name="New York City", state_id=state2.id)
+        user1 = User(name="Alice")
+        user2 = User(name="Bob")
+        amenity1 = Amenity(name="Wifi")
+        amenity2 = Amenity(name="Pool")
+        place1 = Place(name="Cozy apartment", city_id=city1.id, user_id=user1.id)
+        place2 = Place(name="Luxury penthouse", city_id=city2.id, user_id=user2.id)
+        review1 = Review(text="Great place", place_id=place1.id, user_id=user1.id)
+        review2 = Review(text="Terrible place", place_id=place2.id, user_id=user2.id)
+        
+        objects = [state1, state2, city1, city2, user1, user2, amenity1, amenity2, place1, place2, review1, review2]
+        
+        for obj in objects:
+            storage.new(obj)
+            storage.save()
+            
+            # Count the total number of objects in the database
+            total_count = sum(storage.count(cls) for cls in all_classes)
+            
+            # Ensure count returns the correct number of objects
+            self.assertEqual(storage.count(), total_count)
+            
+            # Ensure count returns the correct number of objects for each class
+            for cls in all_classes:
+                self.assertEqual(storage.count(cls), storage.__session.query(eval(cls)).count())
+                
+                storage.close()
 
 if __name__ == "__main__":
     unittest.main()
