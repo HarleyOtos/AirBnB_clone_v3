@@ -20,7 +20,7 @@ def not_found(error):
     """Handles 404 errors"""
     return jsonify({"error": "Not found"}), 404
 
-if __name__ = __main__:
+if __name__ == "__main__":
     import os
     host = os.environ.get('HBNB_API_HOST', '0.0.0.0')
     port = int(os.environ.get('HBNB_API_PORT', 5000))
