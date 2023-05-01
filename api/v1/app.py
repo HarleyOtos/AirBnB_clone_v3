@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-#Starts the API
+"""
+Starts the API and return the status of your API
+Registers the blueprint and runs the Flask server
+"""
 from flask import flask
 from api.v1.views import app_views
 from models import FileStorage
@@ -10,7 +13,7 @@ app.register_blueprint(app_views)
 @app.teardown_appcontent
 def teardown_storage(exception):
     """Calls storage.close()"""
-    storage,close()
+    storage.close()
 
 if __name__ = __main__:
     import os
