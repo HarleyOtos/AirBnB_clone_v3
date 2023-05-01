@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# Creates a route status on the object that returns a JSON file
+"""
+Creates a route status on the object that returns a JSON file
+"""
 from flask import jsonify
 from api.v1.views import app_views
 
