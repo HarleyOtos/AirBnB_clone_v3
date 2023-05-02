@@ -104,11 +104,11 @@ class TestDBStorage(unittest.TestCase):
         state = State(name="State")
         storage.new(state)
         storage.save()
-        
+
         # Test retrieving the State object by ID
         result = storage.get(State, state.id)
         self.assertEqual(result, state)
-        
+
         # Test retrieving a non-existent object
         result = storage.get(State, "invalid_id")
         self.assertIsNone(result)

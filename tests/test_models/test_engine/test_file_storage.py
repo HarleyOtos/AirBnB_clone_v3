@@ -101,7 +101,7 @@ class TestFileStorage(unittest.TestCase):
                 self.assertEqual(line, "{}")
 
         self.assertIs(self.storage.reload(), None)
-    
+
     def test_file_storage_get(self):
         """Test the get() method of DBStorage."""
         storage = DBStorage()
@@ -110,7 +110,7 @@ class TestFileStorage(unittest.TestCase):
         state = State(name="State")
         storage.new(state)
         storage.save()
-        
+
         # Test retrieving the State object by ID
         result = storage.get(State, state.id)
         self.assertEqual(result, state)

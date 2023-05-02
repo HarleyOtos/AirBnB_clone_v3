@@ -99,14 +99,14 @@ class DBStorage:
         """Close the Session
         """
         self.__session.close()
-    
+
     def get(self, cls, id):
         """Retrieve an object from storage."""
 
         if cls and id:
             key = "{}.{}".format(cls.__name__, id)
             return self.__session.query(cls).get(id)
-    
+
     def count(self, cls=None):
         """Count the number of objects in storage."""
 
