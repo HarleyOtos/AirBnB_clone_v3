@@ -60,6 +60,22 @@ class BaseModel:
         """return a string representaion
         """
         return self.__str__()
+    def to_json(self, saving_file_storage=False):
+        """
+            returns json representation of self
+        """
+        obj_class = self.__class__.__name__
+        bm_dict = {
+            k: v if self.__is_serializable(v) else str(v)
+            for k, v in self.__dict__.items()
+        }
+        bm_dict.pop('_sa_instance_state', None)
+        bm_dict.update({
+            '__class__': obj_class
+            })
+        if not saving_file_storage and obj_class == 'User':
+            bm_dict.pop('password', None)
+        return(bm_dict)
 
     def save(self):
         """updates the public instance attribute updated_at to current
@@ -82,6 +98,22 @@ class BaseModel:
             my_dict.pop('_sa_instance_state')
 
         return my_dict
+
+    def bm_update(self, attr_dict=None):
+        """
+            updates the basemodel and sets the correct attributes
+        """
+        IGNORE = [
+            'id', 'created_at', 'updated_at', 'email',
+            'state_id', 'user_id', 'city_id', 'place_id'
+        ]
+        if attr_dict:
+            updated_dict = {
+                k: v for k, v in attr_dict.items() if k not in IGNORE
+            }
+            for key, value in updated_dict.items():
+                setattr(self, key, value)
+            self.save()
 
     def delete(self):
         """Deletes the current instance from
