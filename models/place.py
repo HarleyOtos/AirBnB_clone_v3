@@ -59,6 +59,7 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+        review_ids = []
 
         @property
         def reviews(self):
@@ -93,3 +94,21 @@ class Place(BaseModel, Base):
 
             if type(value) == Amenity:
                 self.amenity_ids.append(value.id)
+   
+        @property
+        def reviews(self):
+            """
+                getter for reviews list, i.e. reviews attribute of self
+            """
+            if len(self.review_ids) > 0:
+                return review_ids
+            else:
+                return None
+
+        @reviews.setter
+        def reviews(self, review_obj):
+            """
+                setter for review_ids
+            """
+            if review_obj and review_obj not in self.review_ids:
+                self.review_ids.append(review_obj.id)
